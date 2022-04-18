@@ -1,33 +1,17 @@
 import iconsUrl from 'url:../../img/icons.svg';
 import { Fraction } from 'fractional';
+import View from './View';
 
-class RecipeView {
-  #parentElement = document.querySelector('.recipe');
-  #data;
-  render(data) {
-    this.#clear;
-    this.#data = data;
-    const markup = this.#generateMarkup(this.#data);
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-  #clear() {
-    this.#parentElement.innerHTML = '';
-  }
-  renderSpinner = function () {
-    const markup = `<div class="spinner">
-    <svg>
-      <use href="${iconsUrl}#icon-loader"></use>
-    </svg>
-  </div>`;
-    this.#parentElement.innerHTML = '';
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
-  };
+class RecipeView extends View {
+  _parentElement = document.querySelector('.recipe');
+  _errorMessage = "We couldn't find that recipe. Please try another one!";
+  _message = '';
   addHandlerRender(handler) {
     // window.addEventListener('hashchange', controlRecipes);
     // window.addEventListener('load', controlRecipes);
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
   }
-  #generateMarkup(recipe) {
+  _generateMarkup(recipe) {
     return `
           <figure class="recipe__fig">
             <img src="${recipe.image}" alt="Tomato" class="recipe__img" />
@@ -70,9 +54,7 @@ class RecipeView {
             </div>
   
             <div class="recipe__user-generated">
-              <svg>
-                <use href="${iconsUrl}#icon-user"></use>
-              </svg>
+              
             </div>
             <button class="btn--round">
               <svg class="">
@@ -84,7 +66,7 @@ class RecipeView {
           <div class="recipe__ingredients">
             <h2 class="heading--2">Recipe ingredients</h2>
             <ul class="recipe__ingredient-list">
-              ${recipe.ingredients.map(this.#generateIngredientMarkup).join('')}
+              ${recipe.ingredients.map(this._generateIngredientMarkup).join('')}
             </ul>
           </div>
   
@@ -109,7 +91,7 @@ class RecipeView {
             </a>
           </div>  `;
   }
-  #generateIngredientMarkup(ingredient) {
+  _generateIngredientMarkup(ingredient) {
     return `
 <li class="recipe__ingredient">
   <svg class="recipe__icon">
