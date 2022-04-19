@@ -1,4 +1,5 @@
 import iconsUrl from 'url:../../img/icons.svg';
+import { SERVING_INCREMENT } from '../config';
 import { Fraction } from 'fractional';
 import View from './View';
 
@@ -10,6 +11,13 @@ class RecipeView extends View {
     // window.addEventListener('hashchange', controlRecipes);
     // window.addEventListener('load', controlRecipes);
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
+  }
+  addHandlerUpdateServings(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--tiny');
+      const updateTo = +btn.dataset.updateServings;
+      if (updateTo > 0) handler(updateTo);
+    });
   }
   _generateMarkup(recipe) {
     return `
@@ -40,12 +48,16 @@ class RecipeView extends View {
               <span class="recipe__info-text">servings</span>
   
               <div class="recipe__info-buttons">
-                <button class="btn--tiny btn--increase-servings">
+                <button data-update-servings= "${
+                  this._data.servings - SERVING_INCREMENT
+                }" class="btn--tiny btn--decrease-servings">
                   <svg>
                     <use href="${iconsUrl}#icon-minus-circle"></use>
                   </svg>
                 </button>
-                <button class="btn--tiny btn--increase-servings">
+                <button data-update-servings= "${
+                  this._data.servings + SERVING_INCREMENT
+                }" class="btn--tiny btn--increase-servings">
                   <svg>
                     <use href="${iconsUrl}#icon-plus-circle"></use>
                   </svg>
