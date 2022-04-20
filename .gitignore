@@ -4,3 +4,4 @@ Planning/
 node_modules/
 .parcel-cache/
 dist/
+NOTES.md

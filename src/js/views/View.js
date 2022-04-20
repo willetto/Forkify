@@ -4,6 +4,17 @@ export default class View {
   _data;
   _errorMessage = '';
   _message = '';
+
+  /**
+   * Render the recieved object to the DOM
+   * @param {Object| Object[]} data The data to be rendered (e.g. recipe)
+   * @param {boolean} [render = true] If false, create markup string only instead of rendering to the DOM.
+   * @returns {undefined | string}If rendering, returns nothing. If not rendering, returns markup.
+   * @this {Object} View Instance
+   * @author Trey Willetto
+   * @todo Finish Implementation
+   */
+
   render(data, render = true) {
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
@@ -62,6 +73,20 @@ export default class View {
 <div>
   <svg>
     <use href="${iconsUrl}#icon-alert-triangle"></use>
+  </svg>
+</div>
+<p>${message}</p>
+</div>
+`;
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+  renderMessage(message = this._message) {
+    const markup = `
+<div class="error">
+<div>
+  <svg>
+    <use href="${iconsUrl}#icon-smile"></use>
   </svg>
 </div>
 <p>${message}</p>
